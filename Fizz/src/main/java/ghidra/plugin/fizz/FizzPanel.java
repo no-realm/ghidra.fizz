@@ -23,8 +23,8 @@ class FizzPanel {
             ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED),
         BorderLayout.SOUTH);
-    int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_OPTION);
-    if (result == JOptionPane.OK_OPTION) {
+    int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.YES_NO_OPTION);
+    if (result == JOptionPane.YES_OPTION) {
       textArea.selectAll();
       textArea.copy();
     }
