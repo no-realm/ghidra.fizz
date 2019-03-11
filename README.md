@@ -1,10 +1,10 @@
 # ghidra.fizz
 
-#### Ghidra: Fizz - Fizzing Signatures Plugin 
+#### Ghidra: Fizz - Signature Maker Plugin
 
 ## Brief
 
-This is a simple plugin which can create and load custom fizz signatures for binaries.
+This is a simple plugin which can create array of byte signatures for currently selected areas.
 
 ## Demo
 
@@ -36,7 +36,7 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 
 This project is licensed under the [Apache License 2.0 (Apache-2.0)][ref-AP2]. See the [LICENSE.md][ref-lic-path] file for details.
 
-[ref-demo]: ./doc/images/xxx.gif
+[ref-demo]: ./doc/images/M8ExCrgK1r.gif
 [ref-releases]: https://github.com/quosego/ghidra.fizz/releases
 [ref-issue]: https://github.com/NationalSecurityAgency/ghidra/issues/13
 [ref-self]: https://github.com/quosego
