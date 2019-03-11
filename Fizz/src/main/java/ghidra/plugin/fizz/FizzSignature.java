@@ -148,7 +148,7 @@ class FizzSignature {
         bytes.append(convertByteToString(this.memory.getByte(start))).append(" ");
       } catch (MemoryAccessException e) {
         // can't do anything
-        // isnt valid memory so set as unknown
+        // isn't valid memory so set as unknown
       }
       start = getNextAddress(start, range);
     }
@@ -174,11 +174,8 @@ class FizzSignature {
         bytes.append(getBytesTrailingFromMnemonic(instruction));
 
       } catch (MemoryAccessException e) {
-        // can't do anything so reset and set as unknown
-        bytes = new StringBuilder();
-        for (int i = 1; i < instruction.getLength(); i++) {
-          bytes.append(this.delimiter).append(" ");
-        }
+          // can't do anything
+          // isn't valid memory so set as unknown
       }
     }
     return bytes.toString();
