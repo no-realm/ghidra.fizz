@@ -103,10 +103,7 @@ class FizzSignature {
     String bytesTrailing = "";
     try {
       switch (instruction.getLength()) {
-          // else to 5
         case 2: // X ??
-          bytesTrailing += createPaddingAtFor(1, instruction.getLength());
-          break;
         case 5: // X ?? ?? ?? ??
           bytesTrailing += createPaddingAtFor(1, instruction.getLength());
           break;
@@ -148,7 +145,6 @@ class FizzSignature {
         bytes.append(convertByteToString(this.memory.getByte(start))).append(" ");
       } catch (MemoryAccessException e) {
         // can't do anything
-        // isn't valid memory so set as unknown
       }
       start = getNextAddress(start, range);
     }
@@ -168,14 +164,13 @@ class FizzSignature {
       try {
         // first byte of the the mnemonic
         bytes
-            .append(convertByteToString(this.memory.getByte(instruction.getAddress())))
+            .append(convertByteToString(instruction.getByte(0)))
             .append(" ");
 
         bytes.append(getBytesTrailingFromMnemonic(instruction));
 
       } catch (MemoryAccessException e) {
           // can't do anything
-          // isn't valid memory so set as unknown
       }
     }
     return bytes.toString();
