@@ -23,9 +23,22 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 3. Start Ghidra, a prompt of a new plugin has been found should show
 4. Activate prompt and start using
 
+## Hotkeys
+
+- Create Common Signature
+    - V + ALT
+- Create Ghidra Signature
+    - G + ALT
+- Create a RAW Signature
+    - D + ALT
+
 ## Todos
 
-- [ ] Add todos
+- [x] Added hotkeys on selection
+- [x] Added copy on "OK" selection by default
+- [x] Added back raw signature support
+- [x] Reduced window output size
+- [x] Cleaned source code
 
 
 ## Developer

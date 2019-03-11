@@ -100,7 +100,7 @@ class FizzContext {
         actionGhidraSignatureContext, SET_CONTEXT_GHIDRA_SELECTION, SET_CONTEXT_GHIDRA_POPUPPATH);
 
     actionGhidraSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+        new KeyBindingData(KeyEvent.VK_G, InputEvent.ALT_DOWN_MASK));
     tool.addAction(actionGhidraSignatureContext);
   }
 
@@ -121,7 +121,7 @@ class FizzContext {
         actionCommonSignatureContext, SET_CONTEXT_COMMON_SELECTION, SET_CONTEXT_COMMON_POPUPPATH);
 
     actionCommonSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
+        new KeyBindingData(KeyEvent.VK_V, InputEvent.ALT_DOWN_MASK));
     tool.addAction(actionCommonSignatureContext);
   }
 
@@ -143,7 +143,7 @@ class FizzContext {
         actionRawSignatureContext, SET_CONTEXT_RAW_SELECTION, SET_CONTEXT_RAW_POPUPPATH);
 
     actionRawSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
+        new KeyBindingData(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
     tool.addAction(actionRawSignatureContext);
   }
 
