@@ -1,15 +1,8 @@
 package ghidra.plugin.fizz;
 
-import java.util.Iterator;
-
 import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressRange;
-import ghidra.program.model.address.AddressRangeImpl;
-import ghidra.program.model.address.AddressRangeIterator;
 import ghidra.program.model.address.AddressSet;
-import ghidra.program.model.lang.OperandType;
-import ghidra.program.model.listing.Data;
-import ghidra.program.model.listing.DataIterator;
 import ghidra.program.model.listing.Instruction;
 import ghidra.program.model.listing.InstructionIterator;
 import ghidra.program.model.listing.Listing;
@@ -20,10 +13,9 @@ import ghidra.program.util.ProgramSelection;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 10, 2019
+ * @version Mar 11, 2019
  */
-public class FizzSignature {
-  private Program program;
+class FizzSignature {
   private Memory memory;
   private Listing listing;
   private ProgramSelection selection;
@@ -34,17 +26,53 @@ public class FizzSignature {
   private String delimiter;
 
   FizzSignature(Program program, ProgramSelection selection, String delimiter) {
-    this.raw = "";
-    this.signature = "";
-    this.program = program;
-    this.memory = program.getMemory();
-    this.listing = program.getListing();
-    this.selection = selection;
-    this.delimiter = delimiter;
-
-    setBytesFromAddressRange();
-    setSignatureFromAddressRange();
+    setMemory(program.getMemory());
+    setListing(program.getListing());
+    setDelimiter(delimiter);
+    setSelection(selection);
+    setRaw(getBytesFromAddressRange());
+    setSignature(getSignatureFromAddressRange());
   }
+
+  // =============================================================================================
+  // Getter and Setter methods
+  // =============================================================================================
+
+  String getRaw() {
+    return this.raw;
+  }
+
+  private void setRaw(String raw) {
+    this.raw = raw;
+  }
+
+  String getSignature() {
+    return this.signature;
+  }
+
+  private void setSignature(String signature) {
+    this.signature = signature;
+  }
+
+  private void setMemory(Memory memory) {
+    this.memory = memory;
+  }
+
+  private void setListing(Listing listing) {
+    this.listing = listing;
+  }
+
+  private void setDelimiter(String delimiter) {
+    this.delimiter = delimiter;
+  }
+
+  private void setSelection(ProgramSelection selection) {
+    this.selection = selection;
+  }
+
+  // =============================================================================================
+  // Iterator Helper methods
+  // =============================================================================================
 
   private Address getNextAddress(Address currentAddress, AddressRange range) {
     if (currentAddress == null) {
@@ -55,29 +83,20 @@ public class FizzSignature {
     return currentAddress.equals(range.getMaxAddress()) ? null : currentAddress.next();
   }
 
-  private void setBytesFromAddressRange() {
-    String bytes = "";
-    // only one selection per context at time so can pull just the first
-    AddressRange range = this.selection.getFirstRange();
-    Address start = range.getMinAddress();
-    while (start != null) {
-      try {
-        bytes += convertByteToString(this.memory.getByte(start)) + " ";
-      } catch (MemoryAccessException e) {
-        // can't do anything
-        // isnt valid memory so set as unknown
-      }
-      start = getNextAddress(start, range);
-    }
-    this.raw = bytes;
+  // =============================================================================================
+  // Formatting / Padding Helper methods
+  // =============================================================================================
+
+  private String convertByteToString(byte b) {
+    return String.format("%02X ", b);
   }
 
   private String createPaddingAtFor(int offset, int length) {
-    String bytes = "";
+    StringBuilder bytes = new StringBuilder();
     for (int i = offset; i < length; i++) {
-      bytes += this.delimiter + " ";
+      bytes.append(this.delimiter).append(" ");
     }
-    return bytes;
+    return bytes.toString();
   }
 
   private String getBytesTrailingFromMnemonic(Instruction instruction) {
@@ -115,8 +134,29 @@ public class FizzSignature {
     return bytesTrailing;
   }
 
-  private void setSignatureFromAddressRange() {
-    String bytes = "";
+  // =============================================================================================
+  // Signature Making Helper methods
+  // =============================================================================================
+
+  private String getBytesFromAddressRange() {
+    StringBuilder bytes = new StringBuilder();
+    // only one selection per context at time so can pull just the first
+    AddressRange range = this.selection.getFirstRange();
+    Address start = range.getMinAddress();
+    while (start != null) {
+      try {
+        bytes.append(convertByteToString(this.memory.getByte(start))).append(" ");
+      } catch (MemoryAccessException e) {
+        // can't do anything
+        // isnt valid memory so set as unknown
+      }
+      start = getNextAddress(start, range);
+    }
+    return bytes.toString();
+  }
+
+  private String getSignatureFromAddressRange() {
+    StringBuilder bytes = new StringBuilder();
     // only one selection per context at time so can pull just the first
     AddressSet address = new AddressSet(this.selection.getFirstRange());
     InstructionIterator instructionIterator = listing.getInstructions(address, true);
@@ -127,32 +167,20 @@ public class FizzSignature {
 
       try {
         // first byte of the the mnemonic
-        bytes += convertByteToString(this.memory.getByte(instruction.getAddress())) + " ";
+        bytes
+            .append(convertByteToString(this.memory.getByte(instruction.getAddress())))
+            .append(" ");
 
-        bytes += getBytesTrailingFromMnemonic(instruction);
+        bytes.append(getBytesTrailingFromMnemonic(instruction));
 
       } catch (MemoryAccessException e) {
         // can't do anything so reset and set as unknown
-        bytes = "";
+        bytes = new StringBuilder();
         for (int i = 1; i < instruction.getLength(); i++) {
-          bytes += this.delimiter + " ";
+          bytes.append(this.delimiter).append(" ");
         }
       }
     }
-    this.signature = bytes;
-  }
-
-  private String convertByteToString(byte b) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(String.format("%02X ", b));
-    return sb.toString();
-  }
-
-  public String getSignature() {
-    return this.signature;
-  }
-
-  public String getRaw() {
-    return this.raw;
+    return bytes.toString();
   }
 }
