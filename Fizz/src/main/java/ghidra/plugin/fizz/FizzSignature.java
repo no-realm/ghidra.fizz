@@ -177,7 +177,7 @@ class FizzSignature {
       try {
         // first byte of the the mnemonic
         bytes.append(convertByteToString(instruction.getByte(0))).append(getSpacer());
-
+        // following bytes
         bytes.append(getBytesTrailingFromMnemonic(instruction));
 
       } catch (MemoryAccessException e) {
