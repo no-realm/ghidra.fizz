@@ -24,11 +24,13 @@ class FizzSignature {
   private String signature;
 
   private String delimiter;
+  private String spacer;
 
   FizzSignature(Program program, ProgramSelection selection, String delimiter) {
     setMemory(program.getMemory());
     setListing(program.getListing());
     setDelimiter(delimiter);
+    setSpacer(" ");
     setSelection(selection);
     setRaw(getBytesFromAddressRange());
     setSignature(getSignatureFromAddressRange());
@@ -66,8 +68,20 @@ class FizzSignature {
     this.delimiter = delimiter;
   }
 
+  private String getDelimiter() {
+    return this.delimiter;
+  }
+
   private void setSelection(ProgramSelection selection) {
     this.selection = selection;
+  }
+
+  private void setSpacer(String spacer) {
+    this.spacer = spacer;
+  }
+
+  private String getSpacer() {
+    return this.spacer;
   }
 
   // =============================================================================================
@@ -94,7 +108,7 @@ class FizzSignature {
   private String createPaddingAtFor(int offset, int length) {
     StringBuilder bytes = new StringBuilder();
     for (int i = offset; i < length; i++) {
-      bytes.append(this.delimiter).append(" ");
+      bytes.append(getDelimiter()).append(getSpacer());
     }
     return bytes.toString();
   }
@@ -110,13 +124,13 @@ class FizzSignature {
         case 3: // X X ??
         case 4: // X X ?? ??
         case 6: // X X ?? ?? ?? ??
-          bytesTrailing += convertByteToString(instruction.getByte(1)) + " ";
+          bytesTrailing += convertByteToString(instruction.getByte(1)) + getSpacer();
           bytesTrailing += createPaddingAtFor(2, instruction.getLength());
           break;
         case 7: // X X X ?? ?? ?? ??
         case 8: // X X X ?? ?? ?? ?? ??
-          bytesTrailing += convertByteToString(instruction.getByte(1)) + " ";
-          bytesTrailing += convertByteToString(instruction.getByte(2)) + " ";
+          bytesTrailing += convertByteToString(instruction.getByte(1)) + getSpacer();
+          bytesTrailing += convertByteToString(instruction.getByte(2)) + getSpacer();
           bytesTrailing += createPaddingAtFor(3, instruction.getLength());
           break;
         default:
@@ -125,7 +139,6 @@ class FizzSignature {
       }
     } catch (MemoryAccessException e) {
       // can't do anything so reset and set as unknown
-      bytesTrailing = "";
       bytesTrailing += createPaddingAtFor(1, instruction.getLength());
     }
     return bytesTrailing;
@@ -142,7 +155,7 @@ class FizzSignature {
     Address start = range.getMinAddress();
     while (start != null) {
       try {
-        bytes.append(convertByteToString(this.memory.getByte(start))).append(" ");
+        bytes.append(convertByteToString(this.memory.getByte(start))).append(getSpacer());
       } catch (MemoryAccessException e) {
         // can't do anything
       }
@@ -163,14 +176,12 @@ class FizzSignature {
 
       try {
         // first byte of the the mnemonic
-        bytes
-            .append(convertByteToString(instruction.getByte(0)))
-            .append(" ");
+        bytes.append(convertByteToString(instruction.getByte(0))).append(getSpacer());
 
         bytes.append(getBytesTrailingFromMnemonic(instruction));
 
       } catch (MemoryAccessException e) {
-          // can't do anything
+        // can't do anything
       }
     }
     return bytes.toString();
