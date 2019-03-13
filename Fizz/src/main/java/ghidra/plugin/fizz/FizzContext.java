@@ -66,10 +66,6 @@ class FizzContext {
   // =============================================================================================
 
   private void createDockingAction(DockingAction action, String[] selection, String[] popup) {
-    System.out.println(selection);
-    System.out.println(popup);
-    System.out.println(action);
-    System.out.println("------------");
     MenuData menuData = new MenuData(selection, CONTEXT_GROUP);
     menuData.setMenuSubGroup(Integer.toString(programSubMenuPosition));
     action.setMenuBarData(menuData);
