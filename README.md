@@ -25,12 +25,12 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 
 ## Hotkeys
 
-- Create Common Signature
-    - V + ALT
-- Create Ghidra Signature
-    - G + ALT
 - Create a RAW Signature
-    - D + ALT
+    - 1 + ALT
+- Create Ghidra Signature
+    - 2 + ALT
+- Create Common Signature
+    - 3 + ALT
 
 ## Todos
 
@@ -39,7 +39,11 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 - [x] Added back raw signature support
 - [x] Reduced window output size
 - [x] Cleaned source code
+- [ ] A support into existing Ghidra Instruction Search Plugin
 
+## Resolved Issues
+
+- [x] Context Menu Duplicated hotkeys
 
 ## Developer
 
@@ -49,7 +53,7 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 
 This project is licensed under the [Apache License 2.0 (Apache-2.0)][ref-AP2]. See the [LICENSE.md][ref-lic-path] file for details.
 
-[ref-demo]: ./doc/images/M8ExCrgK1r.gif
+[ref-demo]: ./doc/images/Q6KHnppHFG.gif
 [ref-releases]: https://github.com/quosego/ghidra.fizz/releases
 [ref-issue]: https://github.com/NationalSecurityAgency/ghidra/issues/13
 [ref-self]: https://github.com/quosego

@@ -12,7 +12,7 @@ import ghidra.framework.plugintool.util.PluginStatus;
     packageName = "Fizz",
     category = PluginCategoryNames.ANALYSIS,
     shortDescription = "Signature Maker Plugin",
-    description = "Signature Maker Plugin - by quosego <https://github.com/quosego>")
+    description = "Signature Maker Plugin - by quosego 'https://github.com/quosego'")
 // @formatter:on
 
 /**

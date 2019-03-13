@@ -21,14 +21,14 @@ import java.awt.event.KeyEvent;
  */
 class FizzContext {
   private PluginTool tool;
-  private static int programSubMenuPosition = 1;
+  private int programSubMenuPosition = 0;
 
   private static final String CONTEXT_GROUP = "Fizz";
   private static final String MENU_CONTEXT = "Fizz Signature";
 
   //
   private static final String CONTEXT_GHIDRA_OPTION_SELECTION =
-      "Create a Ghidra Signature from Selection";
+      "Obtain a Ghidra Signature from Selection";
   private static final String[] SET_CONTEXT_GHIDRA_POPUPPATH = {
     MENU_CONTEXT, CONTEXT_GHIDRA_OPTION_SELECTION
   };
@@ -38,7 +38,7 @@ class FizzContext {
 
   //
   private static final String CONTEXT_COMMON_OPTION_SELECTION =
-      "Create a Common Signature from Selection";
+      "Obtain a Common Signature from Selection";
   private static final String[] SET_CONTEXT_COMMON_POPUPPATH = {
     MENU_CONTEXT, CONTEXT_COMMON_OPTION_SELECTION
   };
@@ -48,7 +48,7 @@ class FizzContext {
 
   //
   private static final String CONTEXT_RAW_OPTION_SELECTION =
-      "Create a RAW Signature from Selection";
+      "Obtain a RAW Signature from Selection";
   private static final String[] SET_CONTEXT_RAW_POPUPPATH = {
     MENU_CONTEXT, CONTEXT_RAW_OPTION_SELECTION
   };
@@ -66,10 +66,16 @@ class FizzContext {
   // =============================================================================================
 
   private void createDockingAction(DockingAction action, String[] selection, String[] popup) {
+    System.out.println(selection);
+    System.out.println(popup);
+    System.out.println(action);
+    System.out.println("------------");
     MenuData menuData = new MenuData(selection, CONTEXT_GROUP);
-    menuData.setMenuSubGroup(Integer.toString(programSubMenuPosition++));
+    menuData.setMenuSubGroup(Integer.toString(programSubMenuPosition));
     action.setMenuBarData(menuData);
     action.setPopupMenuData(new MenuData(popup, CONTEXT_GROUP));
+    tool.addAction(action);
+    programSubMenuPosition++;
   }
 
   // =============================================================================================
@@ -77,18 +83,18 @@ class FizzContext {
   // =============================================================================================
 
   private void createActions() {
+    createRawSignatureContext();
     createGhidraSignatureContext();
     createCommonSignatureContext();
-    createRawSignatureContext();
     tool.setMenuGroup(new String[] {MENU_CONTEXT}, CONTEXT_GROUP);
   }
 
-  private void createGhidraSignatureContext() {
-    DockingAction actionGhidraSignatureContext =
-        new NavigatableContextAction(CONTEXT_GHIDRA_OPTION_SELECTION, this.tool.getName()) {
+  private void createRawSignatureContext() {
+    DockingAction action =
+        new NavigatableContextAction(CONTEXT_RAW_OPTION_SELECTION, this.tool.getName()) {
           @Override
           protected void actionPerformed(NavigatableActionContext context) {
-            createSignature(context.getNavigatable(), copySelection(context.getSelection()), ".");
+            createRawSignature(context.getNavigatable(), copySelection(context.getSelection()));
           }
 
           @Override
@@ -96,16 +102,36 @@ class FizzContext {
             return context.hasSelection() && context.getNavigatable().isVisible();
           }
         };
-    createDockingAction(
-        actionGhidraSignatureContext, SET_CONTEXT_GHIDRA_SELECTION, SET_CONTEXT_GHIDRA_POPUPPATH);
+    // set hotkey: 1 + ALT
+    action.setKeyBindingData(new KeyBindingData(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
 
-    actionGhidraSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_G, InputEvent.ALT_DOWN_MASK));
-    tool.addAction(actionGhidraSignatureContext);
+    // add to context menu
+    createDockingAction(action, SET_CONTEXT_RAW_SELECTION, SET_CONTEXT_RAW_POPUPPATH);
+  }
+
+  private void createGhidraSignatureContext() {
+    DockingAction action =
+        new NavigatableContextAction(CONTEXT_GHIDRA_OPTION_SELECTION, this.tool.getName()) {
+          @Override
+          protected void actionPerformed(NavigatableActionContext context) {
+            createSignature(context.getNavigatable(), copySelection(context.getSelection()), "..");
+          }
+
+          @Override
+          protected boolean isEnabledForContext(NavigatableActionContext context) {
+            return context.hasSelection() && context.getNavigatable().isVisible();
+          }
+        };
+
+    // set hotkey: 2 + ALT
+    action.setKeyBindingData(new KeyBindingData(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
+
+    // add to context menu
+    createDockingAction(action, SET_CONTEXT_GHIDRA_SELECTION, SET_CONTEXT_GHIDRA_POPUPPATH);
   }
 
   private void createCommonSignatureContext() {
-    DockingAction actionCommonSignatureContext =
+    DockingAction action =
         new NavigatableContextAction(CONTEXT_COMMON_OPTION_SELECTION, this.tool.getName()) {
           @Override
           protected void actionPerformed(NavigatableActionContext context) {
@@ -117,38 +143,15 @@ class FizzContext {
             return context.hasSelection() && context.getNavigatable().isVisible();
           }
         };
-    createDockingAction(
-        actionCommonSignatureContext, SET_CONTEXT_COMMON_SELECTION, SET_CONTEXT_COMMON_POPUPPATH);
+    // set hotkey: 3 + ALT
+    action.setKeyBindingData(new KeyBindingData(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
 
-    actionCommonSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_V, InputEvent.ALT_DOWN_MASK));
-    tool.addAction(actionCommonSignatureContext);
-  }
-
-  private void createRawSignatureContext() {
-    DockingAction actionRawSignatureContext =
-        new NavigatableContextAction(CONTEXT_COMMON_OPTION_SELECTION, this.tool.getName()) {
-          @Override
-          protected void actionPerformed(NavigatableActionContext context) {
-            createRawSignature(context.getNavigatable(), copySelection(context.getSelection()));
-          }
-
-          @Override
-          protected boolean isEnabledForContext(NavigatableActionContext context) {
-            return context.hasSelection() && context.getNavigatable().isVisible();
-          }
-        };
-
-    createDockingAction(
-        actionRawSignatureContext, SET_CONTEXT_RAW_SELECTION, SET_CONTEXT_RAW_POPUPPATH);
-
-    actionRawSignatureContext.setKeyBindingData(
-        new KeyBindingData(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
-    tool.addAction(actionRawSignatureContext);
+    // add to context menu
+    createDockingAction(action, SET_CONTEXT_COMMON_SELECTION, SET_CONTEXT_COMMON_POPUPPATH);
   }
 
   // =============================================================================================
-  // Action Listener methods
+  // Action Listener helpers
   // =============================================================================================
 
   private ProgramSelection copySelection(ProgramSelection selection) {
@@ -176,6 +179,10 @@ class FizzContext {
     return navigatable;
   }
 
+  // =============================================================================================
+  // Action Listener methods
+  // =============================================================================================
+
   private void createSignature(
       Navigatable navigatable, ProgramSelection selection, String delimiter) {
     navigatable = getNavigatableProgram(navigatable);
@@ -188,7 +195,7 @@ class FizzContext {
   private void createRawSignature(Navigatable navigatable, ProgramSelection selection) {
     navigatable = getNavigatableProgram(navigatable);
     if (navigatable != null) {
-      FizzSignature signature = new FizzSignature(navigatable.getProgram(), selection, "");
+      FizzSignature signature = new FizzSignature(navigatable.getProgram(), selection, "xx");
       FizzPanel panel = new FizzPanel("Fizz - Obtained Raw Signature", signature.getRaw());
     }
   }
