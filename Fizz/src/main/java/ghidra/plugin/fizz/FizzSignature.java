@@ -13,7 +13,7 @@ import ghidra.program.util.ProgramSelection;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 11, 2019
+ * @version Mar 12, 2019
  */
 class FizzSignature {
   private Memory memory;
