@@ -6,6 +6,12 @@
 
 This is a simple plugin which can create array of byte signatures for currently selected areas.
 
+## Status
+
+Currently transitioning into a more advanced / modular plugin. The following readme has been changed to support the next release.
+
+For previous / working builds check out the recent [releases][ref-releases].
+
 ## Demo
 
 ![][ref-demo]
@@ -25,25 +31,22 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 
 ## Hotkeys
 
-- Create a RAW Signature
-    - 1 + ALT
-- Create Ghidra Signature
-    - 2 + ALT
-- Create Common Signature
-    - 3 + ALT
+- Create Ghidra Signature for the Selected Area
+    - A + CTRL
+- Create Ghidra Signature for the Selected Area's Block
+    - B + CTRL
+- Create Ghidra Signature for the Selected Area's Function
+    - F + CTRL
 
 ## Todos
 
-- [x] Added hotkeys on selection
-- [x] Added copy on "OK" selection by default
-- [x] Added back raw signature support
-- [x] Reduced window output size
-- [x] Cleaned source code
-- [ ] A support into existing Ghidra Instruction Search Plugin
-
-## Resolved Issues
-
-- [x] Context Menu Duplicated hotkeys
+- [x] Migrate FizzSignature to MemorySignature and provide modular capabilities
+- [x] Find differences regarding address types when iterating and address appropriately
+- [x] Fix signature to support both instructions and data at the same time
+- [ ] Add support for finding an instruction block start to end
+- [ ] Add support for creating a signature for an instruction block
+- [ ] Add support for finding a function start to end
+- [ ] Add support for creating a signature for a function
 
 ## Developer
 

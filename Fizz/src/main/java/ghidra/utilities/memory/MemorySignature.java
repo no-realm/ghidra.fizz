@@ -13,7 +13,7 @@ import ghidra.program.model.mem.MemoryAccessException;
  * Class for creating generic memory signatures
  *
  * @author quosego <https://github.com/quosego>
- * @version Mar 14, 2019
+ * @version Mar 15, 2019
  */
 public class MemorySignature extends AddressSet {
     private Program program;

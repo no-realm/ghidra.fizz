@@ -18,7 +18,7 @@ import ghidra.utilities.memory.MemorySignature;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 14, 2019
+ * @version Mar 15, 2019
  */
 class FizzSignature {
     private MemorySignature signature;
@@ -34,16 +34,20 @@ class FizzSignature {
 
     public String getSelectedBlockSignature() {
         InstructionBlock block = new InstructionBlock(signature.getMinAddress());
+        // TODO
         // MemoryBlock != InstructionBlock
-        //MemoryBlock block = signature.getMemory().getBlock(signature.getMinAddress());
-        MemorySignature sig = new MemorySignature(signature.getProgram(), block.getStart(), block.getEnd(), signature.getDelimiter());
-        return sig.getSignature();
+        // MemoryBlock block = signature.getMemory().getBlock(signature.getMinAddress());
+        // MemorySignature sig = new MemorySignature(signature.getProgram(), block.getStart(), block.getEnd(), signature.getDelimiter());
+        // return sig.getSignature();
+        return "";
     }
 
     public String getSelectedFunctionSignature() {
         Function function = signature.getProgram().getFunctionManager().getFunctionContaining(signature.getMinAddress());
+        // TODO
         // function function.getBody().getMaxAddress() != EndPoint
-        MemorySignature sig = new MemorySignature(signature.getProgram(), function.getEntryPoint(), function.getBody().getMaxAddress(), signature.getDelimiter());
-        return sig.getSignature();
+        // MemorySignature sig = new MemorySignature(signature.getProgram(), function.getEntryPoint(), function.getBody().getMaxAddress(), signature.getDelimiter());
+        // return sig.getSignature();
+        return "";
     }
 }

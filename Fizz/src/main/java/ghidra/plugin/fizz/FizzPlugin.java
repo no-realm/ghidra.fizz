@@ -17,7 +17,7 @@ import ghidra.framework.plugintool.util.PluginStatus;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 12, 2019
+ * @version Mar 15, 2019
  */
 public class FizzPlugin extends Plugin {
   private static final String PLUGIN_TITLE = "Fizz - Signature Maker Plugin";
