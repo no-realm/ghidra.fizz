@@ -1,19 +1,9 @@
 package ghidra.plugin.fizz;
 
-import ghidra.program.model.address.Address;
-import ghidra.program.model.address.AddressRange;
-import ghidra.program.model.address.AddressRangeImpl;
-import ghidra.program.model.address.AddressSet;
-import ghidra.program.model.lang.InstructionBlock;
 import ghidra.program.model.listing.Function;
-import ghidra.program.model.listing.Instruction;
-import ghidra.program.model.listing.InstructionIterator;
-import ghidra.program.model.listing.Listing;
 import ghidra.program.model.listing.Program;
-import ghidra.program.model.mem.Memory;
-import ghidra.program.model.mem.MemoryAccessException;
-import ghidra.program.model.mem.MemoryBlock;
 import ghidra.program.util.ProgramSelection;
+import ghidra.utilities.environment.BasicBlock;
 import ghidra.utilities.memory.MemorySignature;
 
 /**
@@ -21,33 +11,46 @@ import ghidra.utilities.memory.MemorySignature;
  * @version Mar 15, 2019
  */
 class FizzSignature {
-    private MemorySignature signature;
+  private MemorySignature signature;
 
-    FizzSignature(Program program, ProgramSelection selection, String delimiter) {
-        this.signature = new MemorySignature(program, selection.getFirstRange(), delimiter);
+  FizzSignature(Program program, ProgramSelection selection, String delimiter) {
+    this.signature = new MemorySignature(program, selection.getFirstRange(), delimiter);
+  }
+
+  public String getSelectedSignature() {
+    try {
+      return signature.getSignature();
+    } catch (Exception e) {
+      return "couldn't create";
     }
+  }
 
-    public String getSelectedSignature() {
-        return signature.getSignature();
+  public String getSelectedBlockSignature() {
+    try {
+      BasicBlock block = new BasicBlock(signature.getProgram(), signature.getMinAddress());
+      MemorySignature sig =
+          new MemorySignature(
+              signature.getProgram(), block.getBasicBlock(), signature.getDelimiter());
+      return sig.getSignature();
+    } catch (Exception e) {
+      return "couldn't create";
     }
+  }
 
-
-    public String getSelectedBlockSignature() {
-        InstructionBlock block = new InstructionBlock(signature.getMinAddress());
-        // TODO
-        // MemoryBlock != InstructionBlock
-        // MemoryBlock block = signature.getMemory().getBlock(signature.getMinAddress());
-        // MemorySignature sig = new MemorySignature(signature.getProgram(), block.getStart(), block.getEnd(), signature.getDelimiter());
-        // return sig.getSignature();
-        return "";
+  public String getSelectedFunctionSignature() {
+    try {
+      Function function =
+          signature
+              .getProgram()
+              .getFunctionManager()
+              .getFunctionContaining(signature.getMinAddress());
+      // first range is the function containing the address, rest are following functions after
+      MemorySignature sig =
+          new MemorySignature(
+              signature.getProgram(), function.getBody().getFirstRange(), signature.getDelimiter());
+      return sig.getSignature();
+    } catch (Exception e) {
+      return "couldn't create";
     }
-
-    public String getSelectedFunctionSignature() {
-        Function function = signature.getProgram().getFunctionManager().getFunctionContaining(signature.getMinAddress());
-        // TODO
-        // function function.getBody().getMaxAddress() != EndPoint
-        // MemorySignature sig = new MemorySignature(signature.getProgram(), function.getEntryPoint(), function.getBody().getMaxAddress(), signature.getDelimiter());
-        // return sig.getSignature();
-        return "";
-    }
+  }
 }

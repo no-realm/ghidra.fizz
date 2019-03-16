@@ -192,7 +192,8 @@ class FizzContext {
       FizzSignature signature = new FizzSignature(navigatable.getProgram(), selection, "..");
       FizzPanel panel =
           new FizzPanel(
-              "Fizz - Obtained Selected Area Signature", signature.getSelectedSignature());
+              "Fizz - Obtained Selected Area Signature", 
+              signature.getSelectedSignature());
     }
   }
 
@@ -201,9 +202,11 @@ class FizzContext {
     if (navigatable != null) {
       FizzSignature signature = new FizzSignature(navigatable.getProgram(), selection, "..");
       // TODO
-      // FizzPanel panel = new FizzPanel("Fizz - Obtained Selected Block Signature",
-      // signature.getSelectedBlockSignature());
-      FizzPanel panel = new FizzPanel("Fizz - WIP", "this feature is being developed");
+      FizzPanel panel =
+          new FizzPanel(
+              "Fizz - Obtained Selected Block Signature", 
+              signature.getSelectedBlockSignature());
+      // FizzPanel panel = new FizzPanel("Fizz - WIP", "this feature is being developed");
     }
   }
 
@@ -212,9 +215,11 @@ class FizzContext {
     if (navigatable != null) {
       FizzSignature signature = new FizzSignature(navigatable.getProgram(), selection, "..");
       // TODO
-      // FizzPanel panel = new FizzPanel("Fizz - Obtained Selected Function Signature",
-      // signature.getSelectedFunctionSignature());
-      FizzPanel panel = new FizzPanel("Fizz - WIP", "this feature is being developed");
+      FizzPanel panel =
+          new FizzPanel(
+              "Fizz - Obtained Selected Function Signature",
+              signature.getSelectedFunctionSignature());
+      // FizzPanel panel = new FizzPanel("Fizz - WIP", "this feature is being developed");
     }
   }
 }

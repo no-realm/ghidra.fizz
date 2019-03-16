@@ -171,7 +171,7 @@ public class MemorySignature extends AddressSet {
         this.spacer = spacer;
     }
 
-    private Listing getListing() {
+    public Listing getListing() {
         return this.listing;
     }
 
@@ -293,10 +293,10 @@ public class MemorySignature extends AddressSet {
                     // instruction
                     bytes.append(createInstructionSignature(address));
                 } else if (isDataAt(address)) {
-                    // data unit
+                    // data unit (defined or undefined)
                     bytes.append(createDataSignature(address));
                 } else if (isCodeUnitAt(address)) {
-                    // code unit
+                    // code unit (codeUnit: data or instruction)
                     bytes.append(createCodeUnitSignature(address));   
                 } else {
                     // unknown / not yet supported
@@ -343,7 +343,7 @@ public class MemorySignature extends AddressSet {
     }
     
     // =============================================================================================
-    // Formatting / Padding Helper methods
+    // Formatting / Padding helpers
     // =============================================================================================
 
     private String convertByteToString(byte b) {
