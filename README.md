@@ -41,6 +41,9 @@ Gradle build outputs can be found in Fizz//dist//ghidra_A.B_PUBLIC_ZZZZYYXX_Fizz
 - [x] Add support for creating a signature for an instruction block
 - [x] Add support for finding a function start to end
 - [x] Add support for creating a signature for a function
+- [ ] Fix block selections for abnormal / mutliconditionals 
+- [ ] Verify block support for non-function blocks
+- [ ] Integrate with sail after ported over
 
 ## Developer
 
