@@ -15,7 +15,7 @@ import ghidra.program.model.symbol.ReferenceIterator;
  * Class for finding, getting, and using basic assembly blocks
  *
  * @author quosego <https://github.com/quosego>
- * @version Mar 15, 2019
+ * @version Mar 18, 2019
  */
 public class BasicBlock {
   private Program program;

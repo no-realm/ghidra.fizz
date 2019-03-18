@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 15, 2019
+ * @version Mar 18, 2019
  */
 class FizzContext {
   private PluginTool tool;
