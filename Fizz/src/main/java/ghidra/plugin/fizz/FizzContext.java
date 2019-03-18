@@ -86,7 +86,7 @@ class FizzContext {
 
       // set hotkey: A + CTRL
       action.setKeyBindingData(new KeyBindingData(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-
+          
       // add to context menu
       addDockingAction(action, createContextSelection(option), createContextPopup(option));
     } catch (Exception e) {

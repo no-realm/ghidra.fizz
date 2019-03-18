@@ -120,9 +120,15 @@ public class BasicBlock {
         FlowType flow = instruction.getFlowType();
 
         if (flow.isJump() || flow.isTerminal()) {
-          // start should be on after the end rather than on the end
-          this.start = instruction.getNext().getAddress();
-          isStartBlockFlag = true;
+          Instruction peek = instruction.getPrevious();
+          if (peek.getFlowType().isJump() || flow.isTerminal()) {
+            this.start = instruction.getAddress();
+            isStartBlockFlag = true;
+          } else {
+            // start should be on after the end rather than on the end
+            this.start = instruction.getNext().getAddress();
+            isStartBlockFlag = true;
+          }
         } else if (address.equals(min) || address.equals(functionAddressMin)) {
           this.start = instruction.getAddress();
           isStartBlockFlag = true;
@@ -130,7 +136,6 @@ public class BasicBlock {
           this.start = instruction.getAddress();
           isStartBlockFlag = true;
         }
-        // TODO port from sail project
 
         address = instruction.getPrevious().getAddress();
       } catch (Exception e) {
