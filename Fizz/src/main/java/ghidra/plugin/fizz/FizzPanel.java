@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * @author quosego <https://github.com/quosego>
- * @version Mar 11, 2019
+ * @version Mar 15, 2019
  */
 class FizzPanel {
 
